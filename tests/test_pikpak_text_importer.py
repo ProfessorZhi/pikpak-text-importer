@@ -1,6 +1,7 @@
+import sys
 import unittest
 from pathlib import Path
-import sys
+
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "app"))
@@ -36,16 +37,16 @@ class ExtractShareLinksTests(unittest.TestCase):
     def test_extract_entries_uses_following_line_as_folder_label(self) -> None:
         text = """
         https://mypikpak.com/s/AAA111
-        凉凉子 合集 78G
+        设计文档集合
 
         https://mypikpak.com/s/BBB222
-        BondageLife 186G
+        项目资料归档
         """
 
         entries = extract_share_entries(text)
 
-        self.assertEqual(entries[0].label, "凉凉子 合集 78G")
-        self.assertEqual(entries[1].label, "BondageLife 186G")
+        self.assertEqual(entries[0].label, "设计文档集合")
+        self.assertEqual(entries[1].label, "项目资料归档")
 
 
 if __name__ == "__main__":
