@@ -309,9 +309,8 @@ class MainWindow(QMainWindow):
 
     def save_config_clicked(self) -> None:
         username = self.username_input.text().strip()
-        password = self.password_input.text()
-        if not username or not password:
-            QMessageBox.warning(self, "缺少配置", "请先填写账号和密码。")
+        if not username:
+            QMessageBox.warning(self, "缺少配置", "请先填写账号。")
             return
         save_app_config(self.current_config())
         self.account_validated = False
@@ -325,8 +324,12 @@ class MainWindow(QMainWindow):
         username = self.username_input.text().strip()
         password = self.password_input.text()
         session_file = self.session_input.text().strip() or str(DEFAULT_SESSION_FILE)
-        if not username or not password:
-            QMessageBox.warning(self, "缺少配置", "请先填写账号和密码，再校验。")
+        has_session_file = Path(session_file).exists()
+        if not username:
+            QMessageBox.warning(self, "缺少配置", "请先填写账号。")
+            return
+        if not password and not has_session_file:
+            QMessageBox.warning(self, "缺少配置", "首次登录或会话失效时，请输入密码。")
             return
 
         save_app_config(self.current_config())

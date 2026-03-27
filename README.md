@@ -35,13 +35,14 @@ Or double-click:
 ## Usage
 
 1. Open the desktop client.
-2. Enter your PikPak account and password.
-3. Choose where the local session file should be stored.
-4. Click `保存配置`.
-5. Click `校验账号`.
-6. After validation succeeds, browse to the target parent folder.
-7. Paste text that contains one or more `https://mypikpak.com/s/...` links.
-8. Preview or start the import.
+2. Enter your PikPak account.
+3. Enter your password only when needed for first login or after session expiry.
+4. Choose where the local session file should be stored.
+5. Click `保存配置`.
+6. Click `校验账号`.
+7. After validation succeeds, browse to the target parent folder.
+8. Paste text that contains one or more `https://mypikpak.com/s/...` links.
+9. Preview or start the import.
 
 ## Project Structure
 
@@ -91,6 +92,11 @@ Packaged builds store real config data in the user profile directory:
 
 - `%LOCALAPPDATA%\PikPakTextImporter\config\account.json`
 - `%LOCALAPPDATA%\PikPakTextImporter\session\session.json`
+
+Security note:
+
+- The app does not persist your password in `config/account.json`.
+- The local session cache is stored without the password field.
 
 ## Requirements
 

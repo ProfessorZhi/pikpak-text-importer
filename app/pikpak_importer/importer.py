@@ -133,7 +133,7 @@ def load_app_config(config_path: str | Path = DEFAULT_CONFIG_PATH) -> AppConfig:
     data = json.loads(path.read_text(encoding="utf-8"))
     return AppConfig(
         username=str(data.get("username", "")),
-        password=str(data.get("password", "")),
+        password="",
         folder_path=str(data.get("folder_path", "")),
         session_file=str(data.get("session_file", str(DEFAULT_SESSION_FILE))),
     )
@@ -146,7 +146,6 @@ def save_app_config(config: AppConfig, config_path: str | Path = DEFAULT_CONFIG_
         json.dumps(
             {
                 "username": config.username,
-                "password": config.password,
                 "folder_path": config.folder_path,
                 "session_file": config.session_file,
             },
@@ -165,8 +164,10 @@ def load_session(session_file: Path) -> dict[str, Any] | None:
 
 def save_session(session_file: Path, client: Any) -> None:
     session_file.parent.mkdir(parents=True, exist_ok=True)
+    data = client.to_dict()
+    data.pop("password", None)
     session_file.write_text(
-        json.dumps(client.to_dict(), ensure_ascii=False, indent=2),
+        json.dumps(data, ensure_ascii=False, indent=2),
         encoding="utf-8",
     )
 

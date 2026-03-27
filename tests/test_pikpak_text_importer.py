@@ -1,4 +1,6 @@
+import json
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -6,7 +8,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "app"))
 
-from pikpak_importer.importer import extract_share_entries, extract_share_links, parse_share_link
+from pikpak_importer.importer import (
+    AppConfig,
+    extract_share_entries,
+    extract_share_links,
+    load_app_config,
+    parse_share_link,
+    save_app_config,
+)
 
 
 class ExtractShareLinksTests(unittest.TestCase):
@@ -47,6 +56,26 @@ class ExtractShareLinksTests(unittest.TestCase):
 
         self.assertEqual(entries[0].label, "设计文档集合")
         self.assertEqual(entries[1].label, "项目资料归档")
+
+    def test_app_config_does_not_persist_password(self) -> None:
+        with tempfile.TemporaryDirectory() as temp_dir:
+            config_path = Path(temp_dir) / "account.json"
+            save_app_config(
+                AppConfig(
+                    username="user@example.com",
+                    password="super-secret",
+                    folder_path="/Docs",
+                    session_file="session.json",
+                ),
+                config_path=config_path,
+            )
+
+            raw_data = json.loads(config_path.read_text(encoding="utf-8"))
+            self.assertNotIn("password", raw_data)
+
+            loaded = load_app_config(config_path)
+            self.assertEqual(loaded.username, "user@example.com")
+            self.assertEqual(loaded.password, "")
 
 
 if __name__ == "__main__":
