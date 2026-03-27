@@ -48,6 +48,9 @@ Or double-click:
 
 ```text
 pikpakdownloader/
+  .github/
+    workflows/
+      codeql.yml
   app/
     pikpak_importer/
       __init__.py
