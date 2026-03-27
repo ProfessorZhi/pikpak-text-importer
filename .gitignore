@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.codex/pikpak/
+.pikpak_session.json
+config/account.json
+config/*.local.json
+!config/account.example.json
+*.log
+
+.pytest_cache/
+.mypy_cache/
+build/
+dist/
