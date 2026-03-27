@@ -1,6 +1,7 @@
 import shutil
 import subprocess
 import sys
+import zipfile
 from pathlib import Path
 
 
@@ -10,6 +11,8 @@ BUILD_DIR = ROOT / "build"
 APP_DIST_DIR = DIST_DIR / "app"
 INSTALLER_DIST_DIR = DIST_DIR / "installer"
 APP_NAME = "PikPakTextImporter"
+PORTABLE_ZIP_PATH = INSTALLER_DIST_DIR / f"{APP_NAME}-Portable.zip"
+ICO_PATH = ROOT / "assets" / "pikpak_importer_icon.ico"
 
 
 def run(command: list[str], *, cwd: Path | None = None) -> None:
@@ -49,6 +52,8 @@ def main() -> int:
     APP_DIST_DIR.mkdir(parents=True, exist_ok=True)
     INSTALLER_DIST_DIR.mkdir(parents=True, exist_ok=True)
 
+    run([sys.executable, str(ROOT / "packaging" / "generate_icon.py")])
+
     run(
         [
             pyinstaller,
@@ -58,6 +63,8 @@ def main() -> int:
             "--onedir",
             "--name",
             APP_NAME,
+            "--icon",
+            str(ICO_PATH),
             "--distpath",
             str(APP_DIST_DIR),
             "--workpath",
@@ -74,6 +81,12 @@ def main() -> int:
         ]
     )
 
+    app_folder = APP_DIST_DIR / APP_NAME
+    with zipfile.ZipFile(PORTABLE_ZIP_PATH, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+        for path in app_folder.rglob("*"):
+            if path.is_file():
+                archive.write(path, path.relative_to(app_folder.parent))
+
     run(
         [
             iscc,
@@ -83,7 +96,8 @@ def main() -> int:
 
     print()
     print("Build completed:")
-    print(f"- App folder: {APP_DIST_DIR / APP_NAME}")
+    print(f"- App folder: {app_folder}")
+    print(f"- Portable zip: {PORTABLE_ZIP_PATH}")
     print(f"- Installer: {INSTALLER_DIST_DIR / (APP_NAME + '-Setup.exe')}")
     return 0
 

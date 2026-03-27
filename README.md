@@ -17,6 +17,7 @@ This repository contains only the application code, packaging scripts, and neutr
 - Batch import with progress updates
 - Fast-start Windows build using `PyInstaller --onedir`
 - Windows installer build with Inno Setup
+- Native `.ico` app icon for EXE and installer
 
 ## Quick Start
 
@@ -126,6 +127,8 @@ Build outputs:
 
 - `dist\app\PikPakTextImporter\`
   Fast local app folder
+- `dist\installer\PikPakTextImporter-Portable.zip`
+  Portable archive without installation
 - `dist\installer\PikPakTextImporter-Setup.exe`
   Windows installer
 

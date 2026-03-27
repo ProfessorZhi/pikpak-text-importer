@@ -18,6 +18,7 @@ WizardStyle=modern
 PrivilegesRequired=lowest
 ArchitecturesInstallIn64BitMode=x64compatible
 UninstallDisplayIcon={app}\{#AppExeName}
+SetupIconFile=..\assets\pikpak_importer_icon.ico
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

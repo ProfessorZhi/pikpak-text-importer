@@ -21,5 +21,6 @@ if errorlevel 1 (
 echo.
 echo Build completed successfully.
 echo App folder: dist\app\PikPakTextImporter
+echo Portable zip: dist\installer\PikPakTextImporter-Portable.zip
 echo Installer: dist\installer\PikPakTextImporter-Setup.exe
 pause
